@@ -30,7 +30,7 @@ function loadImage(src) {
   });
 }
 
-// ย่อรูปภาพผู้ใช้ก่อนเก็บ (ประหยัด Storage / localStorage)
+// ย่อรูปภาพผู้ใช้ก่อนเก็บ (ประหยัดพื้นที่จัดเก็บ)
 export async function fileToResizedDataUrl(file, maxSize = 400, quality = 0.78) {
   const dataUrl = await readFileAsDataUrl(file);
   const img = await loadImage(dataUrl);

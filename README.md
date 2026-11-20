@@ -26,7 +26,7 @@ npm run build    # build ไปยังโฟลเดอร์ dist/
 
 ## ต่อ Firebase (สำหรับข้อมูลรวมแบบเรียลไทม์)
 
-1. สร้างโปรเจกต์ที่ [Firebase Console](https://console.firebase.google.com) เปิด **Firestore Database** และ **Storage**
+1. สร้างโปรเจกต์ที่ [Firebase Console](https://console.firebase.google.com) เปิด **Firestore Database** (ไม่ต้องเปิด Storage — รูปโปรไฟล์ถูกย่อขนาดแล้วเก็บเป็น data URL ในเอกสาร Firestore โดยตรง จึงไม่ต้องอัปเกรดแผนเป็น Blaze)
 2. คัดลอก `.env.example` เป็น `.env` แล้วใส่ค่า config ของโปรเจกต์
 3. ตั้ง Security Rules เบื้องต้น (สำหรับเดโม — production ควรจำกัดสิทธิ์):
 

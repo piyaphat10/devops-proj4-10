@@ -2,7 +2,6 @@
 // หากไม่มี แอปจะทำงานใน "โหมดเดโม" (เก็บข้อมูลใน localStorage)
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -16,12 +15,10 @@ const firebaseConfig = {
 export const isFirebaseEnabled = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId && firebaseConfig.storageBucket);
 
 let db = null;
-let storage = null;
 
 if (isFirebaseEnabled) {
   const app = initializeApp(firebaseConfig);
   db = getFirestore(app);
-  storage = getStorage(app);
 }
 
-export { db, storage };
+export { db };

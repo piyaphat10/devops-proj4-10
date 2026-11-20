@@ -1,12 +1,11 @@
 // ชั้นจัดการข้อมูล: Firebase (เมื่อมี config) หรือ localStorage (โหมดเดโม)
-import { isFirebaseEnabled, db, storage } from './firebase.js';
+import { isFirebaseEnabled, db } from './firebase.js';
 import { uid } from './utils.js';
 import { CONFIG } from './config.js';
 import {
   collection, doc, onSnapshot, addDoc, updateDoc, setDoc, deleteDoc,
   increment, serverTimestamp,
 } from 'firebase/firestore';
-import { ref as storageRef, uploadString, getDownloadURL, deleteObject } from 'firebase/storage';
 
 const LS = {
   settings: 'lk_settings',
@@ -111,16 +110,12 @@ function createFirebaseStore() {
     async addKrathong({ name, wish, styleId, photoDataUrl }) {
       if (!this.settings.registrationOpen) throw new Error('ปิดรับสมัครแล้ว');
       if (this.krathongs.length >= this.settings.quota) throw new Error('ครบจำนวนกระทงที่กำหนดแล้ว');
-      const ref = await addDoc(collection(db, 'krathongs'), {
+      // เก็บรูปแบบ data URL ในเอกสาร Firestore โดยตรง (ไม่ต้องใช้ Storage / ไม่ต้องอัปเกรดแผน)
+      const docRef = await addDoc(collection(db, 'krathongs'), {
         name, wish, styleId, votes: 0, createdAt: serverTimestamp(),
+        photoUrl: photoDataUrl || '',
       });
-      if (photoDataUrl) {
-        const r = storageRef(storage, `profile_photos/${ref.id}.jpg`);
-        await uploadString(r, photoDataUrl, 'data_url');
-        const url = await getDownloadURL(r);
-        await updateDoc(ref, { photoUrl: url });
-      }
-      return { id: ref.id };
+      return { id: docRef.id };
     },
     async vote(id) {
       if (getVotedIds().includes(id)) return false;
@@ -138,7 +133,6 @@ function createFirebaseStore() {
     },
     async deleteKrathong(id) {
       await deleteDoc(doc(db, 'krathongs', id));
-      try { await deleteObject(storageRef(storage, `profile_photos/${id}.jpg`)); } catch { /* ไม่มีรูปก็ข้าม */ }
     },
     async resetVotes() {
       await Promise.all(this.krathongs.map((k) => updateDoc(doc(db, 'krathongs', k.id), { votes: 0 })));
