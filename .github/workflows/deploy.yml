@@ -1,0 +1,65 @@
+name: เผยแพร่เว็บไซต์ (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ดึงโค้ด
+        uses: actions/checkout@v4
+
+      - name: ติดตั้ง Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # Vite ฝังค่า Firebase ตอน build จึงต้องมี .env ให้ workflow
+      - name: เขียน .env จาก secret ENV_FILE
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE }}
+        run: |
+          if [ -n "$ENV_FILE" ]; then
+            printf '%s\n' "$ENV_FILE" > .env
+            echo "✓ ใช้ .env จาก secret ENV_FILE (เชื่อมต่อ Firebase)"
+          else
+            echo "⚠ ไม่พบ secret ENV_FILE — build จะอยู่ในโหมดเดโม (ข้อมูลใน localStorage ของเบราว์เซอร์)"
+          fi
+
+      - name: ติดตั้ง dependencies
+        run: npm ci
+
+      - name: สร้างเว็บ (Vite build)
+        run: npm run build
+
+      - name: ป้องกัน Jekyll
+        run: touch dist/.nojekyll
+
+      - name: อัปโหลดไฟล์ที่ build แล้ว
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: เผยแพร่ไปยัง GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

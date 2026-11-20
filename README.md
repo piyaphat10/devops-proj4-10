@@ -47,6 +47,15 @@ service cloud.firestore {
 
 4. รัน `npm run dev` อีกครั้ง — แอปจะใช้ Firebase อัตโนมัติ
 
+## เผยแพร่บน GitHub Pages (อัตโนมัติผ่าน GitHub Actions)
+
+1. Settings → **Secrets and variables → Actions** → **New repository secret** ชื่อ `ENV_FILE` แล้ววางเนื้อหาไฟล์ `.env` ทั้งก้อน (Vite ฝังค่า Firebase ตอน build จึงจำเป็นต้องมี)
+2. Settings → **Pages** → Build and deployment → Source: **GitHub Actions** → Save
+3. push โค้ด → workflow `เผยแพร่เว็บไซต์ (GitHub Pages)` จะ build และเผยแพร่ให้เอง (~1 นาที)
+4. เปิด `https://piyaphat10.github.io/devops-proj4-10/`
+
+> ถ้ายังไม่ใส่ secret `ENV_FILE` เว็บจะขึ้นแต่อยู่ใน **โหมดเดโม** (ข้อมูลแยกตามเบราว์เซอร์ ไม่แชร์กัน)
+
 ## โครงสร้างโปรเจกต์
 
 ```
