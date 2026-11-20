@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1026" />
+  <title>ลอยกระทงวันเพ็ญ · โหวตกระทงออนไลน์</title>
+  <link rel="stylesheet" href="./src/ui/style.css" />
+</head>
+<body>
+  <!-- คอนเทนเนอร์สำหรับฉาก 3D -->
+  <div id="scene-container"></div>
+
+  <!-- แถบบน -->
+  <header id="topbar">
+    <div class="title">🪷 ลอยกระทงวันเพ็ญ</div>
+    <div class="actions">
+      <button id="btn-admin" class="btn btn-ghost" type="button">🔒 ผู้ดูแลระบบ</button>
+    </div>
+  </header>
+
+  <!-- สถานะการรับสมัคร -->
+  <div id="status-bar" class="pill">กำลังโหลด…</div>
+
+  <!-- ปุ่มสมัคร -->
+  <button id="btn-register" class="btn btn-gold btn-register" type="button">🎉 สมัครลอยกระทง</button>
+
+  <!-- พื้นที่สำหรับ popup / modal / toast (สร้างผ่าน JS) -->
+  <div id="overlay-root"></div>
+  <div id="toast-root"></div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

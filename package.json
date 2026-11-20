@@ -1,0 +1,19 @@
+{
+  "name": "loykrathong-3d",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "เว็บแอปลอยกระทงโหวตออนไลน์ ฉาก 3D ด้วย Three.js + Firebase",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "firebase": "^11.1.0",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.11"
+  }
+}
